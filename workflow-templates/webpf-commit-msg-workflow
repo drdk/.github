@@ -1,0 +1,35 @@
+name: Team WEBPF commit message workflow
+
+#Uses code from https://github.com/GsActions/commit-message-checker
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+    branches:
+      - $default-branch
+      - develop
+      - 'release/*'
+
+jobs:
+  check-commit-message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check conventional commit standard
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^(?<type>build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(?<scope>\(\w+\)?((?=:\s)|(?=!:\s)))?(?<breaking>!)?(?<subject>:\s.*)?|^(?<merge>Merge \w+)'
+          flags: 'gm'
+          excludeDescription: 'true'
+          error: 'Your commit does not uphold conventional commit standards.'
+
+      - name: Check JIRA issue is present
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '\[(WEBPF|FRE|MIM|D7|GAR)-[0-9]*\]$'
+          error: 'You need a JIRA issue in the end of your commit like [<PROJECT_ID-ISSUE_NUMBER>]'
+          excludeDescription: 'true'

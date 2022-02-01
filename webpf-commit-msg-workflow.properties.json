@@ -1,0 +1,5 @@
+{
+    "name": "Team WEBPF Commit message workflow",
+    "description": "Workflow that checks pull request uphold team standard for commit names.",
+    "iconName": "example-icon"
+}
